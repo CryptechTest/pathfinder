@@ -219,7 +219,7 @@ function pathfinder.find_path(pos, endpos, entity, dtime)
 		count = count - 1
 
 		if current_index == target_index then
-			--~ minetest.chat_send_all("Found path in " .. (minetest.get_us_time() - start_time) / 1000 .. "ms")
+			minetest.log("verbose","Found path in " .. (minetest.get_us_time() - start_time) / 1000 .. "ms")
 			local path = {}
 			repeat
 				if not closedSet[current_index] then
@@ -233,7 +233,7 @@ function pathfinder.find_path(pos, endpos, entity, dtime)
 			repeat
 				table.insert(reverse_path, table.remove(path))
 			until #path == 0
-			minetest.chat_send_all("Found path in " .. (minetest.get_us_time() - start_time) / 1000 .. "ms. " .. "Path length: " .. #reverse_path)
+			minetest.log("verbose","Found path in " .. (minetest.get_us_time() - start_time) / 1000 .. "ms. " .. "Path length: " .. #reverse_path)
 			return reverse_path
 		end
 
@@ -349,14 +349,14 @@ function pathfinder.find_path(pos, endpos, entity, dtime)
 			end
 		end
 		if count > 300 then
-			minetest.chat_send_all("Path fail")
+			minetest.log("warning","Path fail")
 			return
 		end
 		if (minetest.get_us_time() - start_time) / 1000 > 30 - dtime * 50 then
-			minetest.chat_send_all("Path timeout")
+			minetest.log("warning","Path timeout")
 			return
 		end
 	until count < 1
-	minetest.chat_send_all("count < 1")
+	minetest.log("warning","count < 1")
 	return {pos}
 end
